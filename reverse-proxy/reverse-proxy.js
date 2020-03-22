@@ -18,7 +18,7 @@ const server = http.createServer((request, response) => {
       port: 8080,
       headers: {
         ...request.headers,
-        host: 'localhost:8080',
+        // host: 'localhost:8080',
         'x-real-ip': request.socket.remoteAddress
       },
       timeout: 3
@@ -54,4 +54,15 @@ const server = http.createServer((request, response) => {
   }
 });
 
-server.listen(3001);
+
+const netServer = net.createServer();
+
+netServer.on('connection', (socket) => {
+  // socket.once('data', data => {
+  // console.info(data.toString())
+  server.emit('connection', socket)
+  // })
+
+})
+
+netServer.listen(3001);
